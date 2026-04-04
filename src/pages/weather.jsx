@@ -82,6 +82,7 @@ const Weather = () => {
     useEffect(() => {
       const searchControl = new GeoSearchControl({
         provider,
+        showMarker: false,
       });
 
       map.addControl(searchControl);
