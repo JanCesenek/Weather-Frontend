@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useState } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { BsThermometerSnow } from "react-icons/bs";
 import { MdOutlineSecurity } from "react-icons/md";
@@ -11,7 +10,7 @@ import { FaCloudRain } from "react-icons/fa";
 import { FaHouseFloodWater } from "react-icons/fa6";
 import { TbMessage2Search } from "react-icons/tb";
 
-const ReportDetail = ({ data, exit, hot, cold, wind, rain }) => {
+const ReportDetail = ({ data, exit }) => {
   const [cloudCoverChecked, setCloudCoverChecked] = useState(true);
   const [humidityChecked, setHumidityChecked] = useState(true);
   const [precipitationIntensityChecked, setPrecipitationIntensityChecked] = useState(true);
@@ -105,18 +104,18 @@ const ReportDetail = ({ data, exit, hot, cold, wind, rain }) => {
   };
 
   const tempValues = reportData?.map((el) => el?.values?.temperature);
-  const hotWarning = tempValues?.some((temp) => temp > 30);
-  const hotAlert = tempValues?.some((temp) => temp > 40);
-  const coldAlert = tempValues?.some((temp) => temp < -10);
-  const coldWarning = tempValues?.some((temp) => temp < 0);
+  const hotWarning = tempValues?.some((temp) => temp >= 30);
+  const hotAlert = tempValues?.some((temp) => temp >= 40);
+  const coldAlert = tempValues?.some((temp) => temp <= -10);
+  const coldWarning = tempValues?.some((temp) => temp <= 0);
 
   const windValues = reportData?.map((el) => el?.values?.windSpeed);
-  const windWarning = windValues?.some((wind) => wind > 10);
-  const windAlert = windValues?.some((wind) => wind > 17);
+  const windWarning = windValues?.some((wind) => wind >= 10);
+  const windAlert = windValues?.some((wind) => wind >= 17);
 
   const rainValues = reportData?.map((el) => el?.values?.precipitationIntensity);
-  const rainWarning = rainValues?.some((rain) => rain > 10);
-  const rainAlert = rainValues?.some((rain) => rain > 50);
+  const rainWarning = rainValues?.some((rain) => rain >= 10);
+  const rainAlert = rainValues?.some((rain) => rain >= 50);
 
   const safeWeather =
     !hotWarning &&
