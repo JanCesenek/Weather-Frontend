@@ -80,7 +80,14 @@ const Auth = () => {
           <Button title="Log Out" click={logOut} />
           <Button title="Delete Account" click={deleteAccount} />
           {detail ? (
-            <ReportDetail data={detail?.data?.data?.timelines[0]} exit={() => setDetail(false)} />
+            <ReportDetail
+              data={detail?.data?.data?.timelines[0]}
+              exit={() => setDetail(false)}
+              hot={() => notifyContext("Extreme heat alert!", "hot")}
+              cold={() => notifyContext("Extreme cold alert!", "cold")}
+              wind={() => notifyContext("Extreme wind alert!", "wind")}
+              rain={() => notifyContext("Extreme rain alert!", "rain")}
+            />
           ) : (
             dData?.map((el) => {
               if (el.userID === userID) {

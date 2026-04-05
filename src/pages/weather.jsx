@@ -168,7 +168,16 @@ const Weather = () => {
           classes={submitting ? "opacity-50 pointer-events-none" : ""}
         />
       </div>
-      {result && <ReportDetail data={result?.data?.timelines[0]} exit={() => setResult(false)} />}
+      {result && (
+        <ReportDetail
+          data={result?.data?.timelines[0]}
+          exit={() => setResult(false)}
+          hot={() => notifyContext("Extreme heat alert!", "hot")}
+          cold={() => notifyContext("Extreme cold alert!", "cold")}
+          wind={() => notifyContext("Extreme wind alert!", "wind")}
+          rain={() => notifyContext("Extreme rain alert!", "rain")}
+        />
+      )}
     </div>
   );
 };
