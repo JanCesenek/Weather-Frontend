@@ -48,9 +48,9 @@ const ReportDetail = ({ data, exit, hot, cold, wind, rain }) => {
     const windSpeedValues = reportData?.map((el) => el?.values?.windSpeed);
 
     const evaluateCloudCover = (values) => {
-      const totalHours = values.length;
-      const cloudyHours = values.filter((v) => v > 60).length;
-      const clearHours = values.filter((v) => v < 20).length;
+      const totalHours = values?.length;
+      const cloudyHours = values?.filter((v) => v > 60).length;
+      const clearHours = values?.filter((v) => v < 20).length;
 
       const cloudyPercentage = (cloudyHours / totalHours) * 100;
       const clearPercentage = (clearHours / totalHours) * 100;
@@ -65,7 +65,7 @@ const ReportDetail = ({ data, exit, hot, cold, wind, rain }) => {
     };
 
     const evaluateHumidity = (values) => {
-      const avgHumidity = values.reduce((acc, v) => acc + v, 0) / values.length;
+      const avgHumidity = values?.reduce((acc, v) => acc + v, 0) / values?.length;
       if (avgHumidity > 70) {
         return "High humidity, expect muggy conditions.";
       } else if (avgHumidity < 40) {
@@ -76,8 +76,8 @@ const ReportDetail = ({ data, exit, hot, cold, wind, rain }) => {
     };
 
     const evaluatePrecipitation = (values) => {
-      const rainyHours = values.filter((value) => value > 1).length;
-      const drizzleHours = values.filter((value) => value > 0.1 && value <= 1).length;
+      const rainyHours = values?.filter((value) => value > 1).length;
+      const drizzleHours = values?.filter((value) => value > 0.1 && value <= 1).length;
 
       if (rainyHours > drizzleHours) return "Rainy.";
       if (drizzleHours > 0) return "Slight drizzle.";
@@ -85,7 +85,7 @@ const ReportDetail = ({ data, exit, hot, cold, wind, rain }) => {
     };
 
     const evaluateTemperature = (values) => {
-      const avgTemp = values.reduce((sum, value) => sum + value, 0) / values.length;
+      const avgTemp = values?.reduce((sum, value) => sum + value, 0) / values?.length;
       if (avgTemp > 30) return "Hot temperatures.";
       if (avgTemp > 20) return "Warm temperatures.";
       if (avgTemp > 10) return "Mild temperatures.";
@@ -94,7 +94,7 @@ const ReportDetail = ({ data, exit, hot, cold, wind, rain }) => {
     };
 
     const evaluateWindSpeed = (values) => {
-      const avgWind = values.reduce((sum, value) => sum + value, 0) / values.length;
+      const avgWind = values?.reduce((sum, value) => sum + value, 0) / values?.length;
       if (avgWind > 10) return "High wind.";
       if (avgWind > 5) return "Medium wind.";
       if (avgWind > 1) return "Low wind.";
@@ -117,18 +117,6 @@ const ReportDetail = ({ data, exit, hot, cold, wind, rain }) => {
   const rainValues = reportData?.map((el) => el?.values?.precipitationIntensity);
   const rainWarning = rainValues?.some((rain) => rain > 10);
   const rainAlert = rainValues?.some((rain) => rain > 50);
-
-  useEffect(() => {
-    if (hotAlert) {
-      hot();
-    } else if (coldAlert) {
-      cold();
-    } else if (windAlert) {
-      wind();
-    } else if (rainAlert) {
-      rain();
-    }
-  }, [hotAlert, coldAlert, windAlert, rainAlert, hot, cold, wind, rain]);
 
   const safeWeather =
     !hotWarning &&

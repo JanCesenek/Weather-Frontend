@@ -108,6 +108,22 @@ const Weather = () => {
       setResult(finalData);
       console.log(finalData);
 
+      const reportData = finalData?.data?.timelines[0]?.intervals;
+
+      const tempValues = reportData?.map((el) => el?.values?.temperature);
+      const windValues = reportData?.map((el) => el?.values?.windSpeed);
+      const rainValues = reportData?.map((el) => el?.values?.precipitationIntensity);
+
+      if (tempValues?.some((temp) => temp >= 40)) {
+        notifyContext("Extreme heat alert!", "hot");
+      } else if (tempValues?.some((temp) => temp <= -10)) {
+        notifyContext("Extreme cold alert!", "cold");
+      } else if (windValues?.some((wind) => wind >= 17)) {
+        notifyContext("Extreme wind alert!", "wind");
+      } else if (rainValues?.some((rain) => rain >= 50)) {
+        notifyContext("Extreme rain alert!", "rain");
+      }
+
       if (curUser) {
         const postReqPayload = {
           userID,
@@ -151,7 +167,14 @@ const Weather = () => {
           className="!w-[60rem] !h-[30rem] !text-black rounded-lg"
           center={coords}
           zoom={13}
-          scrollWheelZoom={false}>
+          scrollWheelZoom={false}
+          minZoom={2}
+          maxBounds={[
+            [-90, -180],
+            [90, 180],
+          ]}
+          maxBoundsViscosity={1.0}
+          worldCopyJump={false}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
